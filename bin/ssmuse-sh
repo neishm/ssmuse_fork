@@ -1,0 +1,36 @@
+#! /bin/bash
+#
+# ssmuse-sh
+
+function __ssmuse_sh {
+	typeset noeval
+	typeset tmpfile
+
+	noeval=$1; shift 1
+
+	if [ "${noeval}" = "noeval" ]; then
+		__ssmuse sh "${@}"
+	else
+		tmpfile=$(__ssmuse sh --tmp "${@}")
+		if [ -r "${tmpfile}" ]; then
+			. "${tmpfile}"
+			rm -f "${tmpfile}"
+		fi
+	fi
+}
+
+case $1 in
+--noeval)
+	shift 1
+	__ssmuse_sh noeval "$@"
+	;;
+-h|--help)
+	shift 1
+	__ssmuse_sh noeval -h
+	;;
+*)
+	__ssmuse_sh eval "$@"
+	;;
+esac
+
+unset __ssmuse_sh
