@@ -1,11 +1,11 @@
 Package: ssmuse
-Version: 1.4
+Version: 1.4.1
 Section: admin
 Priority: optional
 Platform: all
-Maintainer: John Marshall <John.Marshall@ssc-spc.gc.ca>
-Description: Loader for SSM domains and packages
-Build Date: 2016-06-30 15:00:07
-Build User: aspgjdm
-Build Host: sage
-Build Uname: ('Linux', 'sage', '3.13.0-87-generic', '#133-Ubuntu SMP Tue May 24 18:32:09 UTC 2016', 'x86_64')
+Maintainer: Michel Valin <mfvalin@gmail.com>
+Description: Loader for SSM domains and packages derived from 1.4 by John Marshall
+Build Date: 2017/03/08
+Build User: armnssm
+Build Host: beluga
+Build Uname: ('Linux', 'beluga', '2.6.32-71.el6', '#1 SMP Wed Sep 1 01:33:01 EDT 2010', 'x86_64')

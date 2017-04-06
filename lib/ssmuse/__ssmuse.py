@@ -163,7 +163,7 @@ def isemptydir(path):
 def islibfreedir(path):
     if not isdir(path):
         return True
-    l = [name for name in os.listdir(path) if name.endswith(".a") or name.endswith(".so")]
+    l = [name for name in os.listdir(path) if name.endswith(".a") or name.endswith(".so") or name.find(".so.") > 1]
     return len(l) == 0
 
 def isnotemptydir(path):
@@ -180,9 +180,10 @@ VARS_SETUPTABLE = [
     (["PATH"], ["/bin"], None, None),
     (["CPATH", "C_INCLUDE_PATH", "CPLUS_INCLUDE_PATH", "OBJC_INCLUDE_PATH", "SSM_INCLUDE_PATH"], ["/include"], "SSMUSE_XINCDIRS", isnotemptydir),
     (["LIBPATH", "LD_LIBRARY_PATH"], ["/lib"], "SSMUSE_XLIBDIRS", isnotlibfreedir),
+    (["SSM_LIB_PATH"], ["/lib"], None, isnotemptydir),
     (["MANPATH"], ["/man", "/share/man"], None, None),
-    (["PYTHONPATH"], ["/lib/python"], None, None),
-    (["TCL_LIBRARY"], ["/lib/tcl"], None, None),
+    (["PYTHONPATH"], ["/lib/python"], None, isnotemptydir),
+    (["TCL_LIBRARY"], ["/lib/tcl"], None, isnotemptydir),
 ]
 VARS = [name for t in VARS_SETUPTABLE for name in t[0]]
 
@@ -581,7 +582,7 @@ if __name__ == "__main__":
                 printe("fatal: unknown argument (%s)" % (arg,))
                 sys.exit(1)
         cg.unexportvar("SSMUSE_PENDMODE")
-        deduppaths()
+#       deduppaths()
 
         # prepare to write out (to stdout or tempfile)
         if not usetmp:

@@ -33,16 +33,19 @@
 get_major_minor() {
 	local a b c
 
-	a=$1
-	b="${a#*.}"
-	a="${a%%.*}"
-	c="${b#*.}"
-	if [ "${a}" == "${b}" ]; then
-		echo "${a}"
-	else
-		b="${b%%.*}"
-		echo "${a}.${b}"
-	fi
+        [[ "$1" == *.* ]] && a=${1%%.*} && b=${1#*.} && b=${b%%.*} 
+        [[ -z $b ]] && echo "${a}"
+        [[ -n $b ]] && echo "${a}.${b}"
+#	a=$1
+#	b="${a#*.}"
+#	a="${a%%.*}"
+#	c="${b#*.}"
+#	if [ "${a}" == "${b}" ]; then
+#		echo "${a}"
+#	else
+#		b="${b%%.*}"
+#		echo "${a}.${b}"
+#	fi
 }
 
 get_plat_arch() {
@@ -184,6 +187,7 @@ linux_platform_redhat() {
 	plat_ver=${line#*release }
 	plat_ver="${plat_ver% *}"
 	plat_ver=$(get_major_minor "${plat_ver}")
+	plat_ver="${plat_ver%%.*}"
 	plat_arch=`get_plat_arch ${plat_dist} ${plat_ver}`
 
 	echo "${plat_dist}-${plat_ver}-${plat_arch}"
@@ -311,7 +315,7 @@ get_compatible_platforms() {
 			platform=""
 		fi
 	done
-	platforms="${platforms} all multi"
+	platforms="${platforms} ${AllMultiOrder:-all multi}"
 	# allow leading blanks to drop
 	echo ${platforms}
 }
@@ -320,10 +324,12 @@ print_usage() {
 	PROG_NAME=$(basename $0)
 	echo "\
 usage: ${PROG_NAME} [<primary_platform>]
+       ${PROG_NAME} --id
 
 Determine the SSM platforms (primary and compatible) for the host.
 If <primay_platform> is given, then use it instead of automatically
-sensing it from the host."
+sensing it from the host.
+If --id is used, prints the platform name as determined by ${PROG_NAME}"
 }
 
 #
@@ -335,6 +341,10 @@ NEWLINE='
 
 if [ $# -eq 1 ]; then
 	case ${1} in
+	--id)
+		ID_CALL="yes"
+		shift 1
+		;;
 	-h|--help)
 		print_usage
 		exit 0
@@ -364,5 +374,7 @@ if [ -z "${platform}" ]; then
 
 	platform=`get_base_platform`
 fi
+
+[[ -n $ID_CALL ]] && echo "${platform}" && exit 0
 
 get_compatible_platforms "${platform}"
