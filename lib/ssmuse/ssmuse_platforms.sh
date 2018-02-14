@@ -327,9 +327,9 @@ usage: ${PROG_NAME} [<primary_platform>]
        ${PROG_NAME} --id
 
 Determine the SSM platforms (primary and compatible) for the host.
-If <primay_platform> is given, then use it instead of automatically
+If <primary_platform> is given, then use it instead of automatically
 sensing it from the host.
-If --id is used, prints the platform name as determined by ${PROG_NAME}"
+If --id is used, print the platform name as determined by ${PROG_NAME}"
 }
 
 #
