@@ -375,6 +375,6 @@ if [ -z "${platform}" ]; then
 	platform=`get_base_platform`
 fi
 
-[[ -n $ID_CALL ]] && echo "${platform}" && exit 0
+[[ -n $ID_CALL ]] && echo "${FORCE_SSM_PLATFORM:-${platform}}" && exit 0
 
-get_compatible_platforms "${platform}"
+get_compatible_platforms "${FORCE_SSM_PLATFORM:-${platform}}"
