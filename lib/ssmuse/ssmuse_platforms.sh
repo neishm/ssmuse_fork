@@ -81,6 +81,12 @@ get_plat_arch() {
 		ppc|ppc64|power*)
 			plat_arch=$(get_power_plat_arch)
 			;;
+		armv6l)
+			plat_arch=armv6l-32
+			;;
+		armv7l)
+			plat_arch=armv7l-32
+			;;
 		*)
 			plat_arch="unk-unk"
 			;;
